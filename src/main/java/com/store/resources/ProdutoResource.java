@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.store.domain.Categoria;
 import com.store.domain.Produto;
-import com.store.dto.CategoriaDTO;
 import com.store.services.ProdutoService;
 
 import io.swagger.annotations.Api;

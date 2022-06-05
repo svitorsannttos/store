@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping(value = "/Usuarios")
+@RequestMapping(value = "/usuarios")
 public class UsuarioResource {
 	
 	@Autowired
