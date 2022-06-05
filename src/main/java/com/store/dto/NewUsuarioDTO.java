@@ -3,54 +3,57 @@ package com.store.dto;
 import java.io.Serializable;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.store.services.validation.UsuarioInsert;
 
 @UsuarioInsert
-@SuppressWarnings("deprecation")
 public class NewUsuarioDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotEmpty(message="Preenchimento obrigatorio")
+	@NotBlank(message="Preenchimento obrigatorio")
 	@Length(min=5, max=80, message="O tamanho deve ser entre 5 e 80 caracteres")
 	private String nome;
 	
-	@NotEmpty(message="Preenchimento obrigatorio")
+	@NotBlank(message="Preenchimento obrigatorio")
 	@Email(message = "E-mail inválido")
 	private String email;
 	
-	@NotEmpty(message="Preenchimento obrigatorio")
+	@NotBlank(message="Preenchimento obrigatorio")
 	private String cpfOuCnpj;
 	
 	private Integer tipo;
 	
-	@NotEmpty(message="Preenchimento obrigatorio")
+	@NotBlank(message="Preenchimento obrigatorio")
 	private String senha;
 
-	@NotEmpty(message="Preenchimento obrigatorio")
+	@NotBlank(message="Preenchimento obrigatorio")
 	private String logradouro;
 	
-	@NotEmpty(message="Preenchimento obrigatorio")
+	@NotBlank(message="Preenchimento obrigatorio")
 	private String numero;
 	
 	private String complemento;
 	
-	@NotEmpty(message="Preenchimento obrigatorio")
+	@NotBlank(message="Preenchimento obrigatorio")
 	private String bairro;
 	
-	@NotEmpty(message="Preenchimento obrigatorio")
+	@NotBlank(message="Preenchimento obrigatorio")
 	private String cep;
+	
+	@NotBlank(message="Preenchimento obrigatorio")
+	private String estado;
+	
+	@NotBlank(message="Preenchimento obrigatorio")
+	private String cidade;
 
-	@NotEmpty(message="Preenchimento obrigatorio")
+	@NotBlank(message="Preenchimento obrigatorio")
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;
-
-	private Integer idCidade;
 
 	public String getTelefone1() {
 		return telefone1;
@@ -153,14 +156,6 @@ public class NewUsuarioDTO implements Serializable {
 		this.cep = cep;
 	}
 
-	public Integer getIdCidade() {
-		return idCidade;
-	}
-
-	public void setIdCidade(Integer idCidade) {
-		this.idCidade = idCidade;
-	}
-
 	public String getSenha() {
 		return senha;
 	}
@@ -169,4 +164,20 @@ public class NewUsuarioDTO implements Serializable {
 		this.senha = senha;
 	}
 
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+	
 }
