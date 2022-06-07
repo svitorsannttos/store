@@ -1,7 +1,10 @@
 package com.store.services;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,6 +51,7 @@ public class PedidoService {
 				"Pedido não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
 	}
 	
+	@Transactional
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);
 		obj.setInstante(new Date());
@@ -68,6 +72,13 @@ public class PedidoService {
 		}
 		repoItemPedido.saveAll(obj.getItens());
 		return obj;
+	}
+	
+	public List<Pedido> findAll(){
+		UserSS user = UserService.authenticated();
+		UsuarioService.find(user.getId());
+		Usuario Usuario =  UsuarioService.find(user.getId());
+		return repo.findByUsuario(Usuario);
 	}
 	
 	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {

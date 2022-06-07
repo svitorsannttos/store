@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -18,6 +17,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.store.domain.enums.Perfil;
@@ -31,20 +32,35 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@NotBlank(message = "Campo obrigatório!")
 	private String nome;
-
+	@NotBlank(message = "Campo obrigatório!")
 	@Column(unique = true)
 	private String email;
-
+	@NotBlank(message = "Campo obrigatório!")
 	@JsonIgnore
 	private String senha;
-
+	@NotBlank(message = "Campo obrigatório!")
 	@Column(unique = true)
 	private String cpfOuCnpj;
+	@NotNull
 	private Integer tipo;
-
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-	private List<Endereco> enderecos = new ArrayList<>();
+	@NotBlank(message = "Campo obrigatório!")
+	private String logradouro;
+	@NotBlank(message = "Campo obrigatório!")
+	private String numero;
+	@NotBlank(message = "Campo obrigatório!")
+	private String complemento;
+	@NotBlank(message = "Campo obrigatório!")
+	private String bairro;
+	@NotBlank(message = "Campo obrigatório!")
+	private String cep;
+	@NotBlank(message = "Campo obrigatório!")
+	private String estado;
+	@NotBlank(message = "Campo obrigatório!")
+	private String cidade;
+	
+	private String imageUrl;
 
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
@@ -60,25 +76,97 @@ public class Usuario implements Serializable {
 
 	public Usuario() {
 		addPerfil(Perfil.CLIENTE);
+		this.imageUrl = "https://bethstore.s3.sa-east-1.amazonaws.com/avatar-blank.png";
 	}
 	
-	public Usuario(Integer id, String nome, String email, String cpfOuCnpj, TipoUsuario tipo, String senha) {
+	public Usuario(Integer id, String nome, String email,
+			String senha, String cpfOuCnpj, TipoUsuario tipo, 
+			String logradouro, String numero, String complemento, 
+			String bairro, String cep, String estado, String cidade) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = (tipo == null) ? null : tipo.getCod();
 		this.senha = senha;
+		this.cpfOuCnpj = cpfOuCnpj;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.cep = cep;
+		this.estado = estado;
+		this.cidade = cidade;
+		this.tipo = (tipo == null) ? null : tipo.getCod();
 		addPerfil(Perfil.CLIENTE);
+		this.imageUrl = "https://bethstore.s3.sa-east-1.amazonaws.com/avatar-blank.png";
 	}
-	
+
 	public void addPerfil(Perfil perfil) {
 		perfis.add(perfil.getCod());
 	}
 
 	public Integer getId() {
 		return id;
+	}
+	
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public void setPerfis(Set<Integer> perfis) {
+		this.perfis = perfis;
 	}
 
 	public void setId(Integer id) {
@@ -125,14 +213,6 @@ public class Usuario implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public List<Endereco> getEnderecos() {
-		return enderecos;
-	}
-
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
-
 	public Set<String> getTelefones() {
 		return telefones;
 	}
@@ -168,6 +248,14 @@ public class Usuario implements Serializable {
 			return false;
 		Usuario other = (Usuario) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 }

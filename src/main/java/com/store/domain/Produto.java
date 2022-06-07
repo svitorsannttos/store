@@ -1,7 +1,11 @@
 package com.store.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +13,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable{
@@ -23,12 +31,22 @@ public class Produto implements Serializable{
 	private String marca;
 	private String modelo;
 	
+	@OneToOne(mappedBy = "produto")
+	private Estoque estoque;
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id_categoria")
-	private Categoria categoria = new Categoria();
+	private Categoria categoria;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="id.produto")
+	private Set<ItemPedido> itens = new HashSet<>();
+	
+	private String imageUrl;
 
 	public Produto() {
-		
+		this.imageUrl = "https://bethstore.s3.sa-east-1.amazonaws.com/prod.jpg";
 	}
 
 	public Produto(Integer id, String nome, Double preco, String marca, String modelo, Categoria categoria) {
@@ -39,8 +57,34 @@ public class Produto implements Serializable{
 		this.marca = marca;
 		this.modelo = modelo;
 		this.categoria = categoria;
+		this.imageUrl = "https://bethstore.s3.sa-east-1.amazonaws.com/prod.jpg";
 	}
 
+	@JsonIgnore
+	public List<Pedido> getPedidos() {
+		List<Pedido> lista = new ArrayList<>();
+		for (ItemPedido x : itens) {
+			lista.add(x.getPedido());
+		}
+		return lista;
+	}
+	
+	public Estoque getEstoque() {
+		return estoque;
+	}
+
+	public void setEstoque(Estoque estoque) {
+		this.estoque = estoque;
+	}
+
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -104,6 +148,14 @@ public class Produto implements Serializable{
 			return false;
 		Produto other = (Produto) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 }

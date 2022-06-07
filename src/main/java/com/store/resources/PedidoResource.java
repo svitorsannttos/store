@@ -1,6 +1,7 @@
 package com.store.resources;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.store.domain.Pedido;
+import com.store.security.UserSS;
 import com.store.services.PedidoService;
+import com.store.services.UserService;
+import com.store.services.UsuarioService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +34,9 @@ public class PedidoResource {
 	
 	@Autowired
 	private PedidoService service;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 	
 	@ApiOperation(value = "Retorna um Pedido")
 	@ApiResponses(value = {
@@ -55,9 +62,24 @@ public class PedidoResource {
 		})
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
+		UserSS user = UserService.authenticated();
+		obj.setUsuario(usuarioService.find(user.getId()));
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@ApiOperation(value = "Retorna uma lista de Pedidos")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retornou uma lista de pedidos."),
+		    @ApiResponse(code = 401, message = "Precisa está autenticado para obter a resposta solicitada."),
+		    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso."),
+		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
+		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
+		})
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<Pedido>> findAll() {
+		return ResponseEntity.ok().body(service.findAll());
 	}
 	
 	@ApiOperation(value = "Retorna uma paginação de Pedidos")
@@ -68,7 +90,7 @@ public class PedidoResource {
 		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
 		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
 		})
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/page",method=RequestMethod.GET)
 	public ResponseEntity<Page<Pedido>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page, 
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 

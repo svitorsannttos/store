@@ -2,12 +2,15 @@ package com.store.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Estoque implements Serializable{
@@ -17,13 +20,13 @@ public class Estoque implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String modelo;
 	private String tamanho;
 	private Integer quantidade;
 	
-	@OneToOne
-	@JoinColumn(name = "id_produto")
-	private Produto produto = new Produto();
+	@JsonIgnore
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_produto", referencedColumnName = "id")
+	private Produto produto;
 	
 	public Estoque() {
 		
@@ -33,7 +36,6 @@ public class Estoque implements Serializable{
 		super();
 		this.id = id;
 		this.quantidade = quantidade;
-		this.modelo = produto.getModelo();
 		this.produto = produto;
 		this.tamanho = tamanho;
 	}
@@ -44,14 +46,6 @@ public class Estoque implements Serializable{
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getModelo() {
-		return modelo;
-	}
-
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
 	}
 
 	public String getTamanho() {

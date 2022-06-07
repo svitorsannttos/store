@@ -1,17 +1,13 @@
 package com.store.resources;
 
-
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,7 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.store.domain.Usuario;
 import com.store.dto.NewUsuarioDTO;
-import com.store.dto.UsuarioDTO;
+import com.store.security.UserSS;
+import com.store.services.UserService;
 import com.store.services.UsuarioService;
 
 import io.swagger.annotations.ApiOperation;
@@ -44,43 +41,14 @@ public class UsuarioResource {
 		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
 		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
 		})
-	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-	public ResponseEntity<Usuario> find(@PathVariable Integer id){
-		Usuario obj = service.find(id);
-		return ResponseEntity.ok().body(obj);
-	}
-	
-	@ApiOperation(value = "Retorna um e-mail do Usuario")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Retornou um e-mail do Usuario."),
-		    @ApiResponse(code = 401, message = "Precisa está autenticado para obter a resposta solicitada."),
-		    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso."),
-		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
-		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
-		})
-	@RequestMapping(value="/email", method=RequestMethod.GET)
-	public ResponseEntity<Usuario> find(@RequestParam(value="value") String email) {
-		Usuario obj = service.findByEmail(email);
+	@RequestMapping(value="/find",method=RequestMethod.GET)
+	public ResponseEntity<Usuario> find(){
+		UserSS user = UserService.authenticated();
+		Usuario obj = service.find(user.getId());
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@ApiOperation(value = "Atualiza um Usuario")
-	@ApiResponses(value = {
-			@ApiResponse(code = 204, message = "Atualizou um Usuario."),
-		    @ApiResponse(code = 401, message = "Precisa está autenticado para obter a resposta solicitada."),
-		    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso."),
-		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
-		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
-		})
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody UsuarioDTO objDto, @PathVariable Integer id) {
-		Usuario obj = service.fromDTO(objDto);
-		obj.setId(id);
-		obj = service.update(obj);
-		return ResponseEntity.noContent().build();
-	}
-
-	@ApiOperation(value = "Deletou um Usuario")
+	@ApiOperation(value = "Deleta um Usuario")
 	@ApiResponses(value = {
 			@ApiResponse(code = 204, message = "Deletou um Usuario."),
 		    @ApiResponse(code = 401, message = "Precisa está autenticado para obter a resposta solicitada."),
@@ -89,9 +57,10 @@ public class UsuarioResource {
 		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
 		})
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		service.delete(id);
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete() {
+		UserSS user = UserService.authenticated();
+		service.delete(user.getId());
 		return ResponseEntity.noContent().build();
 	}
 
@@ -105,30 +74,9 @@ public class UsuarioResource {
 		})
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<UsuarioDTO>> findAll(){
+	public ResponseEntity<List<Usuario>> findAll(){
 		List<Usuario> list = service.findAll();
-		List<UsuarioDTO> listDto = list.stream().map(obj -> new UsuarioDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
-
-	@ApiOperation(value = "Retorna uma paginação de Usuarios")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Retornou uma paginação de Usuarios."),
-		    @ApiResponse(code = 401, message = "Precisa está autenticado para obter a resposta solicitada."),
-		    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso."),
-		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
-		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
-		})
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value="/page",method=RequestMethod.GET)
-	public ResponseEntity<Page<UsuarioDTO>> findPage(
-			@RequestParam(value = "page", defaultValue = "0") Integer page, 
-			@RequestParam(value = "linesPerPage", defaultValue="24") Integer linesPerPage, 
-			@RequestParam(value = "orderBy", defaultValue="nome")String orderBy, 
-			@RequestParam(value = "direction", defaultValue="ASC") String direction){
-		Page<Usuario> list = service.findPage(page, linesPerPage, orderBy, direction);
-		Page<UsuarioDTO> listDto = list.map(obj -> new UsuarioDTO(obj));
-		return ResponseEntity.ok().body(listDto);
+		return ResponseEntity.ok().body(list);
 	}
 	
 	@ApiOperation(value = "Insere uma Usuario")

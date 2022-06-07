@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.store.domain.enums.Perfil;
 
 public class UserSS implements UserDetails {
+	
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
