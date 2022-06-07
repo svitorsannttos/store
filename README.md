@@ -17,8 +17,8 @@ Sebastião Vitor dos Santos  | Back-end
 #### **Tecnologias utilizadas nesse projeto**
 
 ![Alt text](image/java.png?raw=true "Java")
-![Alt text](image/spring.png?raw=true "Java")
-![Alt text](image/postgreesql.png?raw=true "Java")
-![Alt text](image/mysql.png?raw=true "Java")
-![Alt text](image/aws.png?raw=true "Java")
-![Alt text](image/heroku.png?raw=true "Java")
+![Alt text](image/spring.png?raw=true "Spring")
+![Alt text](image/postgreesql.png?raw=true "PostgreSQL")
+![Alt text](image/mysql.png?raw=true "MySQL")
+![Alt text](image/aws.png?raw=true "AWS")
+![Alt text](image/heroku.png?raw=true "Heroku")
