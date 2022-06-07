@@ -4,6 +4,8 @@
 
 Desenvolvido na disciplina de Prgramação WEB para composição das notas da Segunda Unidade.
 
+**Link para documentação com Swagger:** https://bethstoreweb.herokuapp.com/swagger-ui.html
+
 Equipe | Função
 --------- | ------
 André Gustavo Candido da Silva | Back-end
