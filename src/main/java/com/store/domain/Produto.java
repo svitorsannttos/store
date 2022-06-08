@@ -34,7 +34,6 @@ public class Produto implements Serializable{
 	@OneToOne(mappedBy = "produto")
 	private Estoque estoque;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
