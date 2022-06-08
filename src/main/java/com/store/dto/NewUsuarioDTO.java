@@ -14,8 +14,6 @@ import com.store.services.validation.UsuarioInsert;
 public class NewUsuarioDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	private Integer id;
 	
 	@NotBlank(message="Preenchimento obrigatorio")
 	@Length(min=5, max=80, message="O tamanho deve ser entre 5 e 80 caracteres")
@@ -182,14 +180,6 @@ public class NewUsuarioDTO implements Serializable {
 
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 }
