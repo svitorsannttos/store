@@ -66,9 +66,9 @@ public class ProdutoService {
 	}
 
 	public void delete (Integer id){
-		find(id);
+		Produto prod = find(id);
 		try {
-			repo.deleteById(id);
+			repo.delete(prod);
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir porque há entidades relacionadas!");
