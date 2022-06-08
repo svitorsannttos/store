@@ -44,7 +44,7 @@ public class ProdutoService {
 	@Transactional
 	public Produto insert(ProdutoDTO objDto) {
 		Categoria cat = categoriaService.find(objDto.getCategoria().getId());
-		Produto prod = new Produto(null, objDto.getNome(), objDto.getPreco(), objDto.getMarca(), objDto.getModelo(), cat);
+		Produto prod = new Produto(null, objDto.getNome(), objDto.getPreco(), objDto.getMarca(), objDto.getModelo(), objDto.getInformacoesTecnicas(), cat);
 		Estoque est = new Estoque(null, objDto.getQuantidade(), objDto.getTamanho(), prod);
 		repo.save(prod);
 		repoEstoque.save(est);
@@ -85,7 +85,7 @@ public class ProdutoService {
 	
 	public Produto fromDTO (ProdutoDTO objDto) {
 		Produto prod = new Produto(null, objDto.getNome(), objDto.getPreco(), objDto.getMarca(), objDto.getModelo(), 
-				categoriaService.find(objDto.getCategoria().getId()));
+				objDto.getInformacoesTecnicas() ,categoriaService.find(objDto.getCategoria().getId()));
 		
 		return prod;
 	}

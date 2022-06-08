@@ -30,6 +30,7 @@ public class Produto implements Serializable{
 	private Double preco;
 	private String marca;
 	private String modelo;
+	private String informacoesTecnicas;
 	
 	@OneToOne(mappedBy = "produto")
 	private Estoque estoque;
@@ -48,13 +49,15 @@ public class Produto implements Serializable{
 		this.imageUrl = "https://bethstore.s3.sa-east-1.amazonaws.com/prod.jpg";
 	}
 
-	public Produto(Integer id, String nome, Double preco, String marca, String modelo, Categoria categoria) {
+	public Produto(Integer id, String nome, Double preco, String marca, String modelo, 
+			String informacoesTecnicas, Categoria categoria) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
 		this.marca = marca;
 		this.modelo = modelo;
+		this.informacoesTecnicas = informacoesTecnicas;
 		this.categoria = categoria;
 		this.imageUrl = "https://bethstore.s3.sa-east-1.amazonaws.com/prod.jpg";
 	}
@@ -155,6 +158,14 @@ public class Produto implements Serializable{
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public String getInformacoesTecnicas() {
+		return informacoesTecnicas;
+	}
+
+	public void setInformacoesTecnicas(String informacoesTecnicas) {
+		this.informacoesTecnicas = informacoesTecnicas;
 	}
 	
 }

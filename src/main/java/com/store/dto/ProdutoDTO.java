@@ -28,13 +28,16 @@ public class ProdutoDTO implements Serializable{
 	private String tamanho;
 	@NotNull
 	private Integer quantidade;
+	
+	private String informacoesTecnicas;
 
 	private Categoria categoria;
 	
 	public ProdutoDTO() {
 	}
 
-	public ProdutoDTO( String nome, String marca, String modelo, Double preco, String tamanho, Integer quantidade, Categoria categoria) {
+	public ProdutoDTO( String nome, String marca, String modelo, Double preco, String tamanho, Integer quantidade, 
+			String informacoesTecnicas, Categoria categoria) {
 		super();
 		this.nome = nome;
 		this.marca = marca;
@@ -42,6 +45,7 @@ public class ProdutoDTO implements Serializable{
 		this.preco = preco;
 		this.tamanho = tamanho;
 		this.quantidade = quantidade;
+		this.informacoesTecnicas = informacoesTecnicas;
 		this.categoria = categoria;
 	}
 
@@ -99,6 +103,14 @@ public class ProdutoDTO implements Serializable{
 
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	public String getInformacoesTecnicas() {
+		return informacoesTecnicas;
+	}
+
+	public void setInformacoesTecnicas(String informacoesTecnicas) {
+		this.informacoesTecnicas = informacoesTecnicas;
 	}
 
 }
