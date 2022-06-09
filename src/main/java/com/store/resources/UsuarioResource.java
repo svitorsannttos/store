@@ -79,9 +79,9 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@ApiOperation(value = "Insere uma Usuario")
+	@ApiOperation(value = "Insere um Usuario")
 	@ApiResponses(value = {
-			@ApiResponse(code = 201, message = "Inseriu um Usuario."),
+			@ApiResponse(code = 201, message = "Inseriu um usuario."),
 		    @ApiResponse(code = 401, message = "Precisa está autenticado para obter a resposta solicitada."),
 		    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso."),
 		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
@@ -93,6 +93,23 @@ public class UsuarioResource {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@ApiOperation(value = "Atualiza um Usuario")
+	@ApiResponses(value = {
+			@ApiResponse(code = 204, message = "Atualizou um usuario."),
+		    @ApiResponse(code = 401, message = "Precisa está autenticado para obter a resposta solicitada."),
+		    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso."),
+		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
+		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
+		})
+	@RequestMapping(method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody NewUsuarioDTO objDto) {
+		UserSS user = UserService.authenticated();
+		Usuario obj = service.fromDTO(objDto);
+		obj.setId(user.getId());
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@ApiOperation(value = "Insere uma foto de Perfil para um Usuario")

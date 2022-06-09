@@ -71,11 +71,13 @@ public class UsuarioService {
 		return obj;
 	}
 
+	@Transactional
 	public Usuario update(Usuario obj) {
-		Usuario newObj = find(obj.getId());
-		return repo.save(newObj);
+		obj = repo.save(obj);
+		return obj;
 	}
 
+	@Transactional
 	public void delete(Integer id) {
 		find(id);
 		try {

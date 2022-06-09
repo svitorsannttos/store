@@ -3,7 +3,7 @@ package com.store.dto;
 import java.io.Serializable;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -15,44 +15,44 @@ public class NewUsuarioDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	@Length(min=5, max=80, message="O tamanho deve ser entre 5 e 80 caracteres")
 	private String nome;
 	
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	@Email(message = "E-mail inválido")
 	private String email;
 	
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	private String cpfOuCnpj;
 	
 	@NotNull
 	private Integer tipo;
 	
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	private String senha;
 
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	private String logradouro;
 	
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	private String numero;
 	
 	private String complemento;
 	
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	private String bairro;
 	
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	private String cep;
 	
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	private String estado;
 	
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	private String cidade;
 
-	@NotBlank(message="Preenchimento obrigatorio")
+	@NotEmpty(message="Preenchimento obrigatorio")
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;

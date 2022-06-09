@@ -49,7 +49,6 @@ public class Usuario implements Serializable {
 	private String logradouro;
 	@NotBlank(message = "Campo obrigatório!")
 	private String numero;
-	@NotBlank(message = "Campo obrigatório!")
 	private String complemento;
 	@NotBlank(message = "Campo obrigatório!")
 	private String bairro;

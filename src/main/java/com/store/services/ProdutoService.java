@@ -68,11 +68,8 @@ public class ProdutoService {
 	public void delete (Integer id){
 		Produto prod = find(id);
 		try {
-			System.out.println("************ APAGANDO PRODUTO ******************");
 			repo.delete(prod);
-			System.out.println("************ APAGANDO ESTOQUE DO PRODUTO ******************");
 			repoEstoque.delete(prod.getEstoque());
-			System.out.println("************ EXCLUSÃO REALIZADA ******************");
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir porque há entidades relacionadas!");
