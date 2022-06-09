@@ -13,6 +13,8 @@ public class ProdutoDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	private Integer id;
+	
 	@NotBlank(message="Preenchimento obrigatorio")
 	@Length(min=2, max=50, message="O tamanho deve ser entre 2 e 50 caracteres")
 	private String nome;
@@ -36,9 +38,10 @@ public class ProdutoDTO implements Serializable{
 	public ProdutoDTO() {
 	}
 
-	public ProdutoDTO( String nome, String marca, String modelo, Double preco, String tamanho, Integer quantidade, 
+	public ProdutoDTO(Integer id, String nome, String marca, String modelo, Double preco, String tamanho, Integer quantidade, 
 			String informacoesTecnicas, Categoria categoria) {
 		super();
+		this.id = id;
 		this.nome = nome;
 		this.marca = marca;
 		this.modelo = modelo;
@@ -111,6 +114,14 @@ public class ProdutoDTO implements Serializable{
 
 	public void setInformacoesTecnicas(String informacoesTecnicas) {
 		this.informacoesTecnicas = informacoesTecnicas;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }
