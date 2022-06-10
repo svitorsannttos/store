@@ -78,10 +78,7 @@ public class PedidoService {
 	}
 	
 	public List<Pedido> findAll(){
-		UserSS user = UserService.authenticated();
-		UsuarioService.find(user.getId());
-		Usuario Usuario =  UsuarioService.find(user.getId());
-		return repo.findByUsuario(Usuario);
+		return repo.findAll();
 	}
 	
 	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
