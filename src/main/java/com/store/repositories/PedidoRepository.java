@@ -20,4 +20,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer>{
 	@Transactional(readOnly=true)
 	List<Pedido> findByUsuario(Usuario usuario);
 
+	@Transactional(readOnly=true)
+	List<Pedido> findAllById(Integer id);
+
 }

@@ -99,6 +99,20 @@ public class PedidoResource {
 		return ResponseEntity.ok().body(service.findAll());
 	}
 	
+	@ApiOperation(value = "Retorna uma lista de Pedidos do usuario")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retornou uma lista de pedidos do usuario."),
+		    @ApiResponse(code = 401, message = "Precisa está autenticado para obter a resposta solicitada."),
+		    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso."),
+		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
+		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
+		})
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<Pedido>> findAllUser() {
+		UserSS user = UserService.authenticated();
+		return ResponseEntity.ok().body(service.findAllUser(user.getId()));
+	}
+	
 	@ApiOperation(value = "Retorna uma paginação de Pedidos")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Retornou uma paginação de pedidos."),
