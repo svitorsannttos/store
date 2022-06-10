@@ -107,7 +107,7 @@ public class PedidoResource {
 		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
 		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
 		})
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public ResponseEntity<List<Pedido>> findAllUser() {
 		UserSS user = UserService.authenticated();
 		return ResponseEntity.ok().body(service.findAllUser(user.getId()));
