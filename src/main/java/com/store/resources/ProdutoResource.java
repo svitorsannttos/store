@@ -73,7 +73,6 @@ public class ProdutoResource {
 		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
 		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
 		})
-	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ProdutoDTO objDto, @PathVariable Integer id) {
 		Produto obj = service.fromDTO(objDto);
@@ -93,7 +92,6 @@ public class ProdutoResource {
 		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
 		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
 		})
-	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
