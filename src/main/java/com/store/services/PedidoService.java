@@ -95,7 +95,7 @@ public class PedidoService {
 	}
 	
 	public List<Pedido> findAllUser(Integer id){
-		List<Pedido> pedidosUser = repo.findAllById(id);
+		List<Pedido> pedidosUser = repo.findAllByUsuario(UsuarioService.find(id));
 		return pedidosUser;
 	}
 	
