@@ -16,8 +16,10 @@ import com.amazonaws.services.licensemanager.model.AuthorizationException;
 import com.store.domain.ItemPedido;
 import com.store.domain.PagamentoComBoleto;
 import com.store.domain.Pedido;
+import com.store.domain.Produto;
 import com.store.domain.Usuario;
 import com.store.domain.enums.EstadoPagamento;
+import com.store.repositories.EstoqueRepository;
 import com.store.repositories.ItemPedidoRepository;
 import com.store.repositories.PagamentoRepository;
 import com.store.repositories.PedidoRepository;
@@ -38,6 +40,9 @@ public class PedidoService {
 	
 	@Autowired
 	private PagamentoRepository repoPag;
+	
+	@Autowired
+	private EstoqueRepository estoqueRepository;
 	
 	@Autowired
 	private ProdutoService produtoService;
@@ -65,14 +70,22 @@ public class PedidoService {
 			PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
 			boletoService.preencherPagamentoComBoleto(pagto, obj.getInstante());
 		}
+		for(ItemPedido ip : obj.getItens()) {
+			Produto prod = produtoService.find(ip.getProduto().getId());
+			if(ip.getQuantidade() <= prod.getEstoque().getQuantidade()) {
+				estoqueRepository.subtraiQuantidadeEstoqqeProduto(ip.getProduto().getId(), ip.getQuantidade());
+				ip.setDesconto(0.0);
+				ip.setProduto(produtoService.find(ip.getProduto().getId()));
+				ip.setPreco(ip.getProduto().getPreco());
+				ip.setPedido(obj);
+			}else {
+				throw new ObjectNotFoundException(
+						"Não possui quantidade suficiente em estoque! Id do Produto: " + ip.getProduto().getId() + ", Tipo: " + Pedido.class.getName());
+			}
+			
+		}
 		obj = repo.save(obj);
 		repoPag.save(obj.getPagamento());
-		for(ItemPedido ip : obj.getItens()) {
-			ip.setDesconto(0.0);
-			ip.setProduto(produtoService.find(ip.getProduto().getId()));
-			ip.setPreco(ip.getProduto().getPreco());
-			ip.setPedido(obj);
-		}
 		repoItemPedido.saveAll(obj.getItens());
 		return obj;
 	}

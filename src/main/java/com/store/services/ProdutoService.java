@@ -1,6 +1,7 @@
 package com.store.services;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,13 @@ public class ProdutoService {
 	}
 	
 	public List<Produto> findAll(){
-		return repo.findAll();
+		List<Produto> prod = new ArrayList<>();
+		for (Produto p : repo.findAll()) {
+			if(p.getEstoque().getQuantidade() > 0) {
+				prod.add(p);
+			}
+		}
+		return prod;
 	}
 	
 	@Transactional
