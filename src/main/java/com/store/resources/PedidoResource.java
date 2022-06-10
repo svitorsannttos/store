@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.store.domain.Pedido;
+import com.store.dto.EstadoPagamentoDTO;
 import com.store.security.UserSS;
 import com.store.services.PedidoService;
 import com.store.services.UserService;
@@ -51,6 +53,21 @@ public class PedidoResource {
 		Pedido obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	@ApiOperation(value = "Atualiza o estado de um Pedido")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Atualiza o  estado de um pedido."),
+		    @ApiResponse(code = 401, message = "Precisa está autenticado para obter a resposta solicitada."),
+		    @ApiResponse(code = 403, message = "Você não tem permissão para acessar este recurso."),
+		    @ApiResponse(code = 500, message = "Foi gerada uma exceção."),
+		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
+		})
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@RequestMapping(value = "/status",method = RequestMethod.POST)
+	public ResponseEntity<Pedido> updateStatus(@RequestBody EstadoPagamentoDTO objDto){
+		service.alterarEstado(objDto.getEstado(), objDto.getIdPedido());
+		return ResponseEntity.ok().build();
+	}
 
 	@ApiOperation(value = "Insere um Pedido")
 	@ApiResponses(value = {
@@ -61,12 +78,12 @@ public class PedidoResource {
 		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
 		})
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
+	public ResponseEntity<Pedido> insert(@Valid @RequestBody Pedido obj) {
 		UserSS user = UserService.authenticated();
 		obj.setUsuario(usuarioService.find(user.getId()));
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@ApiOperation(value = "Retorna uma lista de Pedidos")

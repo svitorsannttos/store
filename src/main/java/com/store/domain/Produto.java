@@ -50,7 +50,7 @@ public class Produto implements Serializable{
 	}
 
 	public Produto(Integer id, String nome, Double preco, String marca, String modelo, 
-			String informacoesTecnicas, Categoria categoria) {
+			String informacoesTecnicas, Categoria categoria, String imageUrl) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -59,7 +59,7 @@ public class Produto implements Serializable{
 		this.modelo = modelo;
 		this.informacoesTecnicas = informacoesTecnicas;
 		this.categoria = categoria;
-		this.imageUrl = "https://bethstore.s3.sa-east-1.amazonaws.com/prod.jpg";
+		this.imageUrl = (imageUrl == null) ? "https://bethstore.s3.sa-east-1.amazonaws.com/prod.jpg" : imageUrl;
 	}
 
 	@JsonIgnore

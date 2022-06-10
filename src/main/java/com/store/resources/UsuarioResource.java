@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.store.domain.Usuario;
 import com.store.dto.NewUsuarioDTO;
+import com.store.dto.UsuarioUpdateDTO;
 import com.store.security.UserSS;
 import com.store.services.UserService;
 import com.store.services.UsuarioService;
@@ -57,10 +59,9 @@ public class UsuarioResource {
 		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
 		})
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete() {
-		UserSS user = UserService.authenticated();
-		service.delete(user.getId());
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -104,9 +105,9 @@ public class UsuarioResource {
 		    @ApiResponse(code = 404, message = "O servidor não pode encontrar o recurso solicitado."),
 		})
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody NewUsuarioDTO objDto) {
+	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioUpdateDTO objDto) {
 		UserSS user = UserService.authenticated();
-		Usuario obj = service.fromDTO(objDto);
+		Usuario obj = service.fromUpdateDTO(objDto);
 		obj.setId(user.getId());
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();

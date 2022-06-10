@@ -59,10 +59,10 @@ public class ProdutoResource {
 		})
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody ProdutoDTO objDto) {
+	public ResponseEntity<Produto> insert(@Valid @RequestBody ProdutoDTO objDto) {
 		Produto obj = service.insert(objDto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@ApiOperation(value = "Atualiza um Produto")

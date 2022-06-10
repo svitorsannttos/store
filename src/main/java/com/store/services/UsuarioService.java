@@ -20,6 +20,7 @@ import com.store.domain.Usuario;
 import com.store.domain.enums.Perfil;
 import com.store.domain.enums.TipoUsuario;
 import com.store.dto.NewUsuarioDTO;
+import com.store.dto.UsuarioUpdateDTO;
 import com.store.repositories.UsuarioRepository;
 import com.store.security.UserSS;
 import com.store.services.exceptions.DataIntegrityException;
@@ -76,6 +77,7 @@ public class UsuarioService {
 		obj = repo.save(obj);
 		return obj;
 	}
+	
 
 	@Transactional
 	public void delete(Integer id) {
@@ -97,6 +99,20 @@ public class UsuarioService {
 	}
 
 	public Usuario fromDTO(NewUsuarioDTO objDto) {
+		Usuario cli = new Usuario(null, objDto.getNome(), objDto.getEmail(), pe.encode(objDto.getSenha()),
+				objDto.getCpfOuCnpj(), TipoUsuario.toEnum(objDto.getTipo()), objDto.getLogradouro(), objDto.getNumero(),
+				objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), objDto.getEstado(), objDto.getCidade());
+		cli.getTelefones().add(objDto.getTelefone1());
+		if (objDto.getTelefone2() != null) {
+			cli.getTelefones().add(objDto.getTelefone2());
+		}
+		if (objDto.getTelefone3() != null) {
+			cli.getTelefones().add(objDto.getTelefone3());
+		}
+		return cli;
+	}
+	
+	public Usuario fromUpdateDTO(UsuarioUpdateDTO objDto) {
 		Usuario cli = new Usuario(null, objDto.getNome(), objDto.getEmail(), pe.encode(objDto.getSenha()),
 				objDto.getCpfOuCnpj(), TipoUsuario.toEnum(objDto.getTipo()), objDto.getLogradouro(), objDto.getNumero(),
 				objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), objDto.getEstado(), objDto.getCidade());

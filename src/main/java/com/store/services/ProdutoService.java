@@ -44,7 +44,7 @@ public class ProdutoService {
 	@Transactional
 	public Produto insert(ProdutoDTO objDto) {
 		Categoria cat = categoriaService.find(objDto.getCategoria().getId());
-		Produto prod = new Produto(null, objDto.getNome(), objDto.getPreco(), objDto.getMarca(), objDto.getModelo(), objDto.getInformacoesTecnicas(), cat);
+		Produto prod = new Produto(null, objDto.getNome(), objDto.getPreco(), objDto.getMarca(), objDto.getModelo(), objDto.getInformacoesTecnicas(), cat, null);
 		Estoque est = new Estoque(null, objDto.getQuantidade(), objDto.getTamanho(), prod);
 		repo.save(prod);
 		repoEstoque.save(est);
@@ -55,13 +55,15 @@ public class ProdutoService {
 		return repo.findAll();
 	}
 	
+	@Transactional
 	public Produto update(Produto obj) {
 		Produto prod = find(obj.getId());
 		prod.setMarca(obj.getMarca());
 		prod.setModelo(obj.getModelo());
 		prod.setPreco(obj.getPreco());
 		prod.setNome(obj.getNome());
-		repoEstoque.save(obj.getEstoque());
+		prod.setInformacoesTecnicas(obj.getInformacoesTecnicas());
+		repoEstoque.save(prod.getEstoque());
 		return repo.save(prod);
 	}
 
@@ -86,7 +88,7 @@ public class ProdutoService {
 	
 	public Produto fromDTO (ProdutoDTO objDto) {
 		Produto prod = new Produto(null, objDto.getNome(), objDto.getPreco(), objDto.getMarca(), objDto.getModelo(), 
-				objDto.getInformacoesTecnicas() ,categoriaService.find(objDto.getCategoria().getId()));
+				objDto.getInformacoesTecnicas() ,categoriaService.find(objDto.getCategoria().getId()), null);
 		
 		return prod;
 	}

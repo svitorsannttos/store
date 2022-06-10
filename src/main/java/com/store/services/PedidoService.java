@@ -31,6 +31,9 @@ public class PedidoService {
 	private PedidoRepository repo;
 	
 	@Autowired
+	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
 	private BoletoService boletoService;
 	
 	@Autowired
@@ -89,5 +92,10 @@ public class PedidoService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		Usuario Usuario =  UsuarioService.find(user.getId());
 		return repo.findByUsuario(Usuario, pageRequest);
+	}
+	
+	@Transactional
+	public void alterarEstado(Integer estado, Integer idPedido) {
+		pagamentoRepository.alterarEstado(estado, idPedido);
 	}
 }
